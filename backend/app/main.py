@@ -32,8 +32,8 @@ app.include_router(tasks.router)
 # Works in both local dev (3 dirs up) and Docker (2 dirs up)
 _app_dir = os.path.dirname(os.path.abspath(__file__))
 _candidates = [
-    os.path.normpath(os.path.join(_app_dir, "..", "..", "frontend")),
-    os.path.normpath(os.path.join(_app_dir, "..", "..", "..", "frontend")),
+    os.path.normpath(os.path.join(_app_dir, "..", "frontend")),         # Docker: /app/app -> /app/frontend
+    os.path.normpath(os.path.join(_app_dir, "..", "..", "frontend")),   # Local:  backend/app -> frontend
 ]
 frontend_dir = next((c for c in _candidates if os.path.exists(c)), None)
 
