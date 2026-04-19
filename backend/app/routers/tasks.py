@@ -42,7 +42,7 @@ def get_tasks(
         query = query.filter(Task.completed == completed)
 
     total = query.count()
-    tasks = query.order_by(Task.created_at.desc()).offset(skip).limit(limit).all()
+    tasks = query.order_by(Task.completed.asc(), Task.created_at.desc()).offset(skip).limit(limit).all()
 
     return TaskListResponse(tasks=tasks, total=total, skip=skip, limit=limit)
 
