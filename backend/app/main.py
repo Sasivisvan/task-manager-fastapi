@@ -29,8 +29,15 @@ app.include_router(auth.router)
 app.include_router(tasks.router)
 
 # Serve frontend static files
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
-if os.path.exists(frontend_dir):
+# Works in both local dev (3 dirs up) and Docker (2 dirs up)
+_app_dir = os.path.dirname(os.path.abspath(__file__))
+_candidates = [
+    os.path.normpath(os.path.join(_app_dir, "..", "..", "frontend")),
+    os.path.normpath(os.path.join(_app_dir, "..", "..", "..", "frontend")),
+]
+frontend_dir = next((c for c in _candidates if os.path.exists(c)), None)
+
+if frontend_dir:
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
     @app.get("/", include_in_schema=False)
